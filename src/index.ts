@@ -1,1 +1,1 @@
-console.log("Boilerplate TS Jest");
+console.log("URL shortener");
