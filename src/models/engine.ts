@@ -5,7 +5,7 @@ export default class Engine {
     root: string = "";
 
     constructor(root: string) {
-        (root) ? this.root = root : this.root = "www.sh.rt/";
+        this.root = root
     }
 
     shortify = (longURL:string):string => {
@@ -13,13 +13,15 @@ export default class Engine {
         if (link) {
             return link.shortURL
         } else {
-            const shortURL = this.root + generateRandomString(6);
+            const shortURL = this.root+ "/" + generateRandomString(6);
             this.list.push({"shortURL": shortURL,  "longURL": longURL,"viewCounter": 0});
             return(shortURL);
         }
     }
     translate = (URL:string):string|undefined => {
         const link:Link|undefined = this.list.find(l => (l.longURL === URL || l.shortURL === URL));
+        const index:number = this.list.findIndex((l) => l===link);
+        (index !== -1) ? this.list[index].viewCounter++ : null
         return (link) ? (URL === link.shortURL) ?  link.longURL : link.shortURL : undefined
     }
     track = (URL:string):number|undefined => {

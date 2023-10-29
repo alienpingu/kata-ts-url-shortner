@@ -11,7 +11,9 @@ describe("Engine", () => {
     it("Should return long url", () => expect(newEngine.translate(shortURL)).toBe(longURL));
     it("Should return undefined if url not exist", () => expect(newEngine.translate("jojo")).toBe(undefined));
 
-    it("Should return 0 as view counter", () => expect(newEngine.track(shortURL)).toBe(0));
+    it("Should return Number as view counter", () => expect(newEngine.track(shortURL)).toStrictEqual(expect.any(Number)));
+    it("Should return 2 as view counter", () => expect(newEngine.track(shortURL)).toBe(2));
+
     it("Should return undefined as view counter if url not exist", () => expect(newEngine.track("jojo")).toBe(undefined));
 
     it("Should return Link from short url", () => expect(newEngine.statics(shortURL)).toMatchObject({
