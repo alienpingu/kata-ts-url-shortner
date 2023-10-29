@@ -1,16 +1,22 @@
 import Engine from "./models/engine";
 import express from 'express';
-
-const engine = new Engine("shr.tt");
-const bodyParser = require('body-parser');
+import path from 'path';
+import bodyParser from 'body-parser';
+// VAR
+const engine = new Engine();
 const app = express()
 const port = 3001
-
-app.use(bodyParser.json()); // Per JSON
+// JSON BODY
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.get('/', (req, res) => res.send('Hello World!'));
-
+// INDEX
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/views/index.html')));
+// REDIRECT
+app.get('/:route', (req, res) => {
+  let longURL:string | undefined = engine.translate(req.params.route);
+  (longURL) ? res.redirect(longURL) : res.redirect('/');
+});
+// ENGINE
 app.post('/api/shortify', (req, res) => res.json({"message": engine.shortify(req.body.URL)}))
 app.post('/api/translate', (req, res) => res.json({"message": engine.translate(req.body.URL)}))
 app.post('/api/track', (req, res) => res.json({"message": engine.track(req.body.URL)}))

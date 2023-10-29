@@ -2,18 +2,15 @@ import Link from "../interfaces/Link";
 import generateRandomString from "../utils/generateRandomString";
 export default class Engine {
     list: Link[] = [];
-    root: string = "";
 
-    constructor(root: string) {
-        this.root = root
-    }
+    constructor() {}
 
     shortify = (longURL: string): string => {
         const link: Link | undefined = this.list.find(l => l.longURL === longURL);
         if (link) {
             return link.shortURL
         } else {
-            const shortURL = this.root + "/" + generateRandomString(6);
+            const shortURL = generateRandomString(6);
             this.list.push({ "shortURL": shortURL, "longURL": longURL, "viewCounter": 0, "log": [] });
             return (shortURL);
         }

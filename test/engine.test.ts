@@ -1,6 +1,6 @@
 import Engine from "../src/models/engine";
 
-const newEngine:Engine = new Engine("shrt.com/");
+const newEngine:Engine = new Engine();
 const longURL = "https://google.com/profile/me?view=mobile&dock=break";
 const shortURL = newEngine.shortify(longURL);
 
