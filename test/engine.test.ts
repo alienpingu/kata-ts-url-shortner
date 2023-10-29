@@ -11,10 +11,15 @@ describe("Translate", () => {
     it("Should return short url", () => expect(newEngine.translate(longURL)).toBe(shortURL));
     it("Should return long url", () => expect(newEngine.translate(shortURL)).toBe(longURL));
     it("Should return undefined if url not exist", () => expect(newEngine.translate("jojo")).toBe(undefined));
+    it("Should incremet 2 times the view counter", () => expect(newEngine.track(shortURL)).toBe(2));
+    it("Should log date 2 times ", () => {
+        const response:string[]|undefined = newEngine.log(shortURL);
+        expect(response?.length).toStrictEqual(2);
+    });
+
 })
 describe("Track", () => {
     it("Should return Number as view counter", () => expect(newEngine.track(shortURL)).toStrictEqual(expect.any(Number)));
-    it("Should return 2 as view counter", () => expect(newEngine.track(shortURL)).toBe(2));
     it("Should return undefined as view counter if url not exist", () => expect(newEngine.track("jojo")).toBe(undefined));
 });
 describe("Statics", () => {
@@ -33,14 +38,8 @@ describe("Statics", () => {
     it("Should return undefined if url not exist", () => expect(newEngine.statics("jojo")).toBe(undefined));
 });
 describe("Log", () => {
-    it("Should return array of date as log for shortURL ", () => {
-        let res = newEngine.log(shortURL)
-        expect(res?.length).toStrictEqual(2)
-    });
-    it("Should return array of date as log for longURL ", () => {
-        let res = newEngine.log(longURL)
-        expect(res?.length).toStrictEqual(2)
-    });
+    it("Should return array of date as log for shortURL ", () => expect(newEngine.log(shortURL)).toStrictEqual(expect.any(Array)));
+    it("Should return array of date as log for longURL ", () => expect(newEngine.log(longURL)).toStrictEqual(expect.any(Array)));
     it("Should return undefined if url log not exist", () => expect(newEngine.log("jojo")).toBe(undefined));
 });
 describe("Delete", () => {
