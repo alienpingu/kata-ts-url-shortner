@@ -14,7 +14,7 @@ export default class Engine {
             return link.shortURL
         } else {
             const shortURL = this.root+ "/" + generateRandomString(6);
-            this.list.push({"shortURL": shortURL,  "longURL": longURL,"viewCounter": 0});
+            this.list.push({"shortURL": shortURL,  "longURL": longURL,"viewCounter": 0, "log": []});
             return(shortURL);
         }
     }
@@ -32,4 +32,12 @@ export default class Engine {
         const link:Link|undefined = this.list.find(l => (l.longURL === URL || l.shortURL === URL));
         return (link) ?  link : undefined
     }  
+    log = (URL: string):string[]|undefined => {
+        const link:Link|undefined = this.list.find(l => (l.longURL === URL || l.shortURL === URL));
+        return (link) ?  link.log : undefined
+    } 
+    delete = (URL: string):boolean|undefined => {
+        const link:Link|undefined = this.list.find(l => (l.longURL === URL || l.shortURL === URL));
+       return undefined
+    }
 }
