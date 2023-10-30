@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shortify - Admin</title>
+    <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+</head>
+<style>
+    tbody tr td:nth-child(1),  tbody tr td:nth-child(2) {
+        max-width: 7rem; /* Imposta la larghezza massima desiderata */
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+</style>
+<body>
+    <nav class="nav is-fixed row">
+        <a href="/" class="brand center">
+           <p>Shortify</p>
+        </a>
+        <a href="/about">
+            <p>About</p>
+        </a>
+    </nav>
+    <div class="container is-center" style="display: flex;flex-direction: column;min-height: 50vh;">
+        <h1>Admin</h1>
+        <table>
+            <thead>
+              <tr>
+                <th>ShortURL</th>
+                <th>LongURL</th>
+                <th>Views</th>
+                <th></th>
+              </tr>
+             </thead>
+             <tbody>
+               
+            </tbody>
+          </table>
+    </div>
+</body>
+</html>
+<script>
+    const $tbody = document.querySelector('tbody');
+    loadList = () => fetch('/api/list', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+    })
+    .then(response => response.json()) // Parse the response as JSON
+    .then(data => {
+        $tbody.innerHTML = "";
+        data.list.forEach(element => {
+            $tbody.innerHTML += `<tr>
+                 <td>${element.shortURL}</td>
+                 <td>${element.longURL}</td>
+                 <td>${element.viewCounter}</td>
+                 <td><button class="button error icon-only" onClick="deleteItem('${element.shortURL}')">
+                    <img src="https://icongr.am/clarity/trash.svg?size=24&color=ffffff">
+                </button></td>
+               </tr>`
+        });
+    })
+    .catch(error => console.error('Error:', error))
+
+    deleteItem = (URL) =>  fetch('/api/delete', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({"URL": URL}),
+    })
+    .then(response => response.json()) // Parse the response as JSON
+    .then(data => (data.message) ? loadList() : alert('Errore'))
+    .catch(error => console.error('Error:', error))
+
+    loadList();
+</script>

@@ -6,13 +6,23 @@
     <title>Shortify</title>
     <link rel="stylesheet" href="https://unpkg.com/chota@latest">
 </head>
+<style>
+    body {
+        background: #ECE9E6;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #FFFFFF, #ECE9E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+</style>
 <body>
     <nav class="nav is-fixed row">
-        <a class="brand center">
+        <a href="/" class="brand center">
            <p>Shortify</p>
         </a>
+        <a href="/about">
+            <p>About</p>
+        </a>
       </nav>
-    <div class="container  is-full-width is-center is-marginless" style="display: flex;flex-direction: column;min-height: 50vh;">
+    <div class="container is-center" style="display: flex;flex-direction: column;min-height: 50vh;">
         <div class="row is-full-width">
             <div class="col-10-md">
                 <input type="text" name="URL" id="URL">
@@ -43,7 +53,10 @@
         p.innerText = document.location.origin + '/' + data['message'];
         p.className = 'button outline dark text-center';
         p.style.margin = "0 0 0.5rem 0";
-        p.addEventListener("click", () =>  navigator.clipboard.writeText(p.innerText));
+        p.addEventListener("click", (e) =>  {
+            navigator.clipboard.writeText(p.innerText)
+            e.target.className = 'button outline primary text-center'
+        });
         $txtContainer.appendChild(p);
     })
     .catch(error => {

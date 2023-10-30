@@ -11,7 +11,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // INDEX
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../views/index.html')));
-
+app.get('/about', (req, res) => res.sendFile(path.join(__dirname, '../views/about.html')));
+app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, '../views/admin.html')));
 // REDIRECT
 app.get('/:route', (req, res) => {
   let longURL:string | undefined = engine.translate(req.params.route);
