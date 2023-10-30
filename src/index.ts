@@ -10,7 +10,8 @@ const port = 3001
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // INDEX
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/views/index.html')));
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../views/index.html')));
+
 // REDIRECT
 app.get('/:route', (req, res) => {
   let longURL:string | undefined = engine.translate(req.params.route);

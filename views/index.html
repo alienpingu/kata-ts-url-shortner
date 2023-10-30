@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shortify</title>
+    <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+</head>
+<body>
+    <nav class="nav is-fixed row">
+        <a class="brand center">
+           <p>Shortify</p>
+        </a>
+      </nav>
+    <div class="container  is-full-width is-center is-marginless" style="display: flex;flex-direction: column;min-height: 50vh;">
+        <div class="row is-full-width">
+            <div class="col-10-md">
+                <input type="text" name="URL" id="URL">
+            </div>
+            <div class="col-2-md">
+                <button type="submit" class="is-full-width">Submit</button>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="max-height: 40vh;overflow: auto;">
+        <div class="shortURL-container is-center" style="display: flex;flex-direction: column;"></div>
+    </div>
+
+</body>
+</html>
+<script>
+    const $ipt = document.querySelector('input');
+    const $btn = document.querySelector('button');
+    const $txtContainer = document.querySelector('.shortURL-container');
+    $btn.addEventListener('click', () => fetch('/api/shortify', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({"URL": $ipt.value}),
+    })
+    .then(response => response.json()) // Parse the response as JSON
+    .then(data => {
+        let p = document.createElement('P');
+        p.innerText = document.location.origin + '/' + data['message'];
+        p.className = 'button outline dark text-center';
+        p.style.margin = "0 0 0.5rem 0";
+        p.addEventListener("click", () =>  navigator.clipboard.writeText(p.innerText));
+        $txtContainer.appendChild(p);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    }))
+</script>
