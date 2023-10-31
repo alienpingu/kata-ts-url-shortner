@@ -1,0 +1,37 @@
+include components/header
+body
+  include components/navbar
+  .container.is-center(style="display: flex; flex-direction: column; min-height: 50vh;")
+    .row.is-full-width
+      .col-10
+        input(type="text", name="URL", id="URL")
+      .col-2
+        button(type="submit", class="is-full-width") Submit
+  .container(style="max-height: 40vh; overflow: auto;")
+    .shortURL-container.is-center(style="display: flex; flex-direction: column;")
+script.
+  const $ipt = document.querySelector('input');
+  const $btn = document.querySelector('button');
+  const $txtContainer = document.querySelector('.shortURL-container');
+  $btn.addEventListener('click', () => {
+    fetch('/api/shortify', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({"URL": $ipt.value}),
+    })
+    .then(response => response.json()) // Parse the response as JSON
+    .then(data => {
+      let p = document.createElement('P');
+      p.innerText = document.location.origin + '/' + data['message'];
+      p.className = 'button outline dark text-center';
+      p.style.margin = "0 0 0.5rem 0";
+      p.addEventListener("click", (e) =>  {
+        navigator.clipboard.writeText(p.innerText)
+        e.target.className = 'button outline primary text-center'
+      });
+      $txtContainer.appendChild(p);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  });

@@ -1,0 +1,31 @@
+include components/header
+body
+  include components/navbar
+  div.container.is-center(style="display: flex; flex-direction: column; min-height: 50vh;")
+    h1 Admin
+    table
+        thead
+        tr
+            th ShortURL
+            th LongURL
+            th Views
+            th
+        tbody
+        each element in list
+            tr
+            td= element.shortURL
+            td= element.longURL
+            td= element.viewCounter
+            td
+                button.button.error.icon-only(onclick=`deleteItem('${element.shortURL}')`)
+                    img(src="https://icongr.am/clarity/trash.svg?size=24&color=ffffff")
+script.
+  const deleteItem = (URL) => {
+    fetch('/api/delete', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({"URL": URL}),
+    })
+    .then(response => (response.status === 200) ? location.reload() : alert('Errore'))
+    .catch(error => console.error('Error:', error));
+  };
